@@ -31,7 +31,7 @@ const Chat: React.FC = () => {
       setInput('');
 
       try {
-        const response = await fetch('https://a950-194-230-145-15.ngrok-free.app/generate-sql', {
+        const response = await fetch('https://winning-glider-exotic.ngrok-free.app/generate-sql', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -81,10 +81,10 @@ const Chat: React.FC = () => {
           border: '1px solid rgba(255, 255, 255, 0.2)',
         }}
       >
-        <AppBar 
-          position="static" 
-          elevation={0} 
-          sx={{ 
+        <AppBar
+          position="static"
+          elevation={0}
+          sx={{
             backgroundColor: 'rgba(25, 118, 210, 0.9)',
             borderRadius: '16px 16px 0 0',
             backdropFilter: 'blur(10px)',
@@ -157,10 +157,10 @@ const Chat: React.FC = () => {
                         flexDirection: message.sender === 'user' ? 'row-reverse' : 'row',
                       }}
                     >
-                      <Avatar 
-                        sx={{ 
-                          width: 32, 
-                          height: 32, 
+                      <Avatar
+                        sx={{
+                          width: 32,
+                          height: 32,
                           mr: message.sender === 'user' ? 0 : 1,
                           ml: message.sender === 'user' ? 1 : 0,
                           bgcolor: message.sender === 'user' ? '#1976d2' : '#fff',
