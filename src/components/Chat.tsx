@@ -31,7 +31,7 @@ const Chat: React.FC = () => {
       setInput('');
 
       try {
-        const response = await fetch('http://localhost:8000/generate-sql', {
+        const response = await fetch('https://a950-194-230-145-15.ngrok-free.app/generate-sql', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
