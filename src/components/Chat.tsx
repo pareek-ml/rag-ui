@@ -293,6 +293,7 @@ const Chat: React.FC = () => {
           >
             <Box sx={{ display: 'flex', gap: 1 }}>
               <TextField
+                disabled={isGenerating}
                 fullWidth
                 variant="outlined"
                 placeholder="Type a message..."
@@ -318,6 +319,7 @@ const Chat: React.FC = () => {
                 }}
               />
               <IconButton
+                disabled={isGenerating}
                 color="primary"
                 onClick={handleSend}
                 sx={{
