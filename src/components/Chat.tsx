@@ -11,6 +11,7 @@ const Chat: React.FC = () => {
   const [input, setInput] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -89,6 +90,7 @@ const Chat: React.FC = () => {
         console.error('Error during API call:', error);
       } finally {
         setIsGenerating(false);
+        inputRef.current?.focus();
       }
     }
   };
@@ -294,6 +296,7 @@ const Chat: React.FC = () => {
             <Box sx={{ display: 'flex', gap: 1 }}>
               <TextField
                 disabled={isGenerating}
+                inputRef={inputRef}
                 fullWidth
                 variant="outlined"
                 placeholder="Type a message..."

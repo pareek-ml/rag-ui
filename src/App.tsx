@@ -55,10 +55,10 @@ function App() {
       <CssBaseline />
       <GlobalStyles styles={globalStyles} />
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar 
-          position="static" 
+        <AppBar
+          position="static"
           elevation={0}
-          sx={{ 
+          sx={{
             backgroundColor: 'rgba(25, 118, 210, 0.9)',
             backdropFilter: 'blur(10px)',
             borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
@@ -67,11 +67,13 @@ function App() {
           <Toolbar>
             <ChatIcon sx={{ mr: 2 }} />
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              AI Chat Assistant
+              RAG Chat Assistant
             </Typography>
-            <Avatar sx={{ width: 32, height: 32, bgcolor: 'white', color: '#1976d2' }}>
-              <AccountCircleIcon />
-            </Avatar>
+            <a href="https://pareek-ml.github.io" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+              <Avatar sx={{ width: 32, height: 32, bgcolor: 'white', color: '#1976d2', cursor: 'pointer' }}>
+                <AccountCircleIcon />
+              </Avatar>
+            </a>
           </Toolbar>
         </AppBar>
 
@@ -98,7 +100,7 @@ function App() {
           <Chat />
         </Box>
       </Box>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }
 
