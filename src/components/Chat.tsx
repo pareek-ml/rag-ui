@@ -9,6 +9,7 @@ import { Message } from '../types/chat';
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -30,6 +31,18 @@ const Chat: React.FC = () => {
       setMessages([...messages, newMessage]);
       setInput('');
 
+      const placeholderId = (Date.now() + 1).toString();
+      const placeholderMessage: Message = {
+        id: placeholderId,
+        text: 'Generating',
+        sender: 'bot',
+        timestamp: new Date(),
+        isGenerating: true,
+      };
+
+      setMessages(prev => [...prev, placeholderMessage]);
+      setIsGenerating(true);
+
       try {
         const response = await fetch('https://winning-glider-exotic.ngrok-free.app/generate-sql', {
           method: 'POST',
@@ -41,18 +54,41 @@ const Chat: React.FC = () => {
 
         if (response.ok) {
           const data = await response.json();
+
+          setMessages(prev => prev.filter(msg => msg.id !== placeholderId));
+
           const botResponse: Message = {
-            id: (Date.now() + 1).toString(),
+            id: (Date.now() + 2).toString(),
             text: data.sql_query || 'No response from the bot.',
             sender: 'bot',
             timestamp: new Date(),
           };
           setMessages(prev => [...prev, botResponse]);
         } else {
+          setMessages(prev => prev.filter(msg => msg.id !== placeholderId));
+
+          const errorMessage: Message = {
+            id: (Date.now() + 2).toString(),
+            text: 'Error: Could not generate response.',
+            sender: 'bot',
+            timestamp: new Date(),
+          };
+          setMessages(prev => [...prev, errorMessage]);
           console.error('Error from API:', response.statusText);
         }
       } catch (error) {
+        setMessages(prev => prev.filter(msg => msg.id !== placeholderId));
+
+        const errorMessage: Message = {
+          id: (Date.now() + 2).toString(),
+          text: 'Error: Could not connect to the bot.',
+          sender: 'bot',
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, errorMessage]);
         console.error('Error during API call:', error);
+      } finally {
+        setIsGenerating(false);
       }
     }
   };
@@ -197,7 +233,49 @@ const Chat: React.FC = () => {
                         },
                       }}
                     >
-                      <Typography sx={{ wordBreak: 'break-word' }}>{message.text}</Typography>
+                      {message.isGenerating ? (
+                        <Typography sx={{ wordBreak: 'break-word', display: 'flex', alignItems: 'center' }}>
+                          <span>{message.text}</span>
+                          <span className="generating-dots" style={{
+                            display: 'inline-flex',
+                            marginLeft: '4px',
+                            alignItems: 'center'
+                          }}>
+                            <span style={{
+                              animation: 'pulse 1s infinite',
+                              animationDelay: '0s',
+                              height: '4px',
+                              width: '4px',
+                              backgroundColor: '#555',
+                              borderRadius: '50%',
+                              display: 'inline-block',
+                              margin: '0 2px'
+                            }}></span>
+                            <span style={{
+                              animation: 'pulse 1s infinite',
+                              animationDelay: '0.2s',
+                              height: '4px',
+                              width: '4px',
+                              backgroundColor: '#555',
+                              borderRadius: '50%',
+                              display: 'inline-block',
+                              margin: '0 2px'
+                            }}></span>
+                            <span style={{
+                              animation: 'pulse 1s infinite',
+                              animationDelay: '0.4s',
+                              height: '4px',
+                              width: '4px',
+                              backgroundColor: '#555',
+                              borderRadius: '50%',
+                              display: 'inline-block',
+                              margin: '0 2px'
+                            }}></span>
+                          </span>
+                        </Typography>
+                      ) : (
+                        <Typography sx={{ wordBreak: 'break-word' }}>{message.text}</Typography>
+                      )}
                     </Paper>
                   </Box>
                 </Box>
@@ -266,4 +344,4 @@ const Chat: React.FC = () => {
   );
 };
 
-export default Chat; 
+export default Chat;
